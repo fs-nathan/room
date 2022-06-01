@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start-dev": "pm2 start ecosystem.config.js && pm2 monit",
+    "start-dev": "pm2 start ecosystem.config.js",
     "start-production": "pm2 start ecosystem.config.js --env production"
   },
   "author": "fs-nathan",
@@ -19,6 +19,13 @@
     "socket.io": "^4.5.1"
   },
   "devDependencies": {
-    "pm2": "^5.2.0"
+    "eslint": "^8.16.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-node": "^4.1.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "pm2": "^5.2.0",
+    "prettier": "^2.6.2"
   }
 }
