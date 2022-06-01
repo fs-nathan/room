@@ -16,13 +16,14 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json}\"",
+    "format:check:staged": "lint-staged",
+    "format:write": "prettier --write \"**/*.{js,jsx,ts,tsx,json}\"",
+    "lint": "eslint --cache --ext=js,jsx src --fix"
   },
   "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "extends": "@imaginary-cloud/react"
   },
   "browserslist": {
     "production": [
@@ -35,5 +36,20 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "devDependencies": {
+    "@imaginary-cloud/eslint-config-react": "2.0.1",
+    "eslint": "^8.16.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-jest": "^26.0.0",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.28.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "lint-staged": "^13.0.0",
+    "prettier": "^2.6.2"
+  },
+  "prettier": "@imaginary-cloud/prettier-config"
 }
