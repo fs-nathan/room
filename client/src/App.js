@@ -1,8 +1,13 @@
 import React from 'react'
+import { io } from 'socket.io-client'
 import logo from './logo.svg'
 import './App.css'
 
 function App() {
+  const socket = io.connect(process.env.REACT_APP_SERVER_BASE_URI)
+
+  console.log(socket)
+
   return (
     <div className="App">
       <header className="App-header">

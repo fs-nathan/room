@@ -12,7 +12,9 @@ const io = require("socket.io")
 
 const port = process.env.PORT || 8000
 
-const socket = io(http)
+const socket = io(http, {
+    path: '/socket.io',
+})
 //create an event listener
 
 //To listen to messages
