@@ -1,11 +1,11 @@
 {
-  "name": "room-server",
+  "name": "room-backend",
   "version": "1.0.0",
   "description": "Backend for Room application",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start-dev": "pm2 start ecosystem.config.js",
+    "start-dev": "pm2 start ecosystem.config.js && pm2 logs room-backend",
     "start-production": "pm2 start ecosystem.config.js --env production"
   },
   "author": "fs-nathan",
