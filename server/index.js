@@ -1,8 +1,14 @@
 //Require the express moule
 const express = require("express")
+const cors = require('cors')
 
 //create a new express application
 const app = express()
+
+app.use(process.env.NODE_ENV == 'production' ? cors() : cors({
+    origin: 'localhost:3000',
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}))
 
 //require the http module
 const http = require("http").Server(app)
@@ -19,7 +25,7 @@ const socket = io(http, {
 
 //To listen to messages
 socket.on("connection", (socket) => {
-    console.log("user connected")
+    console.log("user connected: ", socket.id)
 })
 
 //wire up the server to listen to our port process.env.PORT || 8000

@@ -1,12 +1,15 @@
-import React from 'react'
-import { io } from 'socket.io-client'
+import React, { useEffect } from 'react'
 import logo from './logo.svg'
 import './App.css'
-
+import { initSocket } from './setupSocket'
 function App() {
-  const socket = io.connect(process.env.REACT_APP_SERVER_BASE_URI)
+  const socketInstance = initSocket()
 
-  console.log(socket)
+  useEffect(() => {
+    if (socketInstance.connected) {
+      console.log(socketInstance)
+    }
+  }, [socketInstance, socketInstance.connected])
 
   return (
     <div className="App">
