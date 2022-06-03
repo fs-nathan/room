@@ -1,16 +1,8 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import logo from './logo.svg'
 import './App.css'
-import { initSocket } from './setupSocket'
+
 function App() {
-  const socketInstance = initSocket()
-
-  useEffect(() => {
-    if (socketInstance.connected) {
-      console.log(socketInstance)
-    }
-  }, [socketInstance, socketInstance.connected])
-
   return (
     <div className="App">
       <header className="App-header">

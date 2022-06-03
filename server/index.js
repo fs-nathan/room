@@ -18,14 +18,25 @@ const io = require("socket.io")
 
 const port = process.env.PORT || 8000
 
-const socket = io(http, {
+const SocketServer = io(http, {
     path: '/socket.io',
 })
 //create an event listener
 
 //To listen to messages
-socket.on("connection", (socket) => {
+SocketServer.on("connection", (socket) => {
     console.log("user connected: ", socket.id)
+
+    socket.on("hi", () => {
+        console.log('say hi: ', socket.id)
+    })
+
+    socket.on("disconnect", (reason) => {
+        console.log("socket disconnected : ", socket.id)
+    })
+})
+SocketServer.on("hi", (socket) => {
+    console.log(socket.id)
 })
 
 //wire up the server to listen to our port process.env.PORT || 8000
