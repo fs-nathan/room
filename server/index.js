@@ -10,6 +10,13 @@ app.use(process.env.NODE_ENV == 'production' ? cors() : cors({
     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }))
 
+/* API config */
+const API_V1_PREFIX = '/api/v1/'
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
+
+/* End API config */
+
 //require the http module
 const http = require("http").Server(app)
 
