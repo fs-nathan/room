@@ -1,4 +1,4 @@
 export default {
-    getAll: async (req, res) => { },
-    create: async (req, res) => { },
+    get: async (req, res) => { },
+    newMessage: async (req, res) => { },
 }

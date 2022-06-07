@@ -1,7 +1,11 @@
-//Require the express moule
-const express = require("express")
-const cors = require('cors')
 
+import express, { json, urlencoded } from "express"
+import cors from 'cors'
+import { createServer } from "http"
+import { Server } from "socket.io"
+import "./config/mongodb.js"
+import RoomMessageRouter from "./routes/api/v1/room-message.route.js"
+import RoomUserRouter from "./routes/api/v1/room-user.route.js"
 //create a new express application
 const app = express()
 
@@ -12,23 +16,19 @@ app.use(process.env.NODE_ENV == 'production' ? cors() : cors({
 
 /* API config */
 const API_V1_PREFIX = '/api/v1/'
-app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
-
+app.use(json())
+app.use(urlencoded({ extended: false }))
+app.use(`${API_V1_PREFIX}/room-message`, RoomMessageRouter)
+app.use(`${API_V1_PREFIX}/room-user`, RoomUserRouter)
 /* End API config */
 
-//require the http module
-const http = require("http").Server(app)
-
-// require the socket.io module
-const io = require("socket.io")
+const httpServer = createServer()
 
 const port = process.env.PORT || 8000
 
-const SocketServer = io(http, {
+const SocketServer = new Server(httpServer, {
     path: '/socket.io',
 })
-//create an event listener
 
 //To listen to messages
 SocketServer.on("connection", (socket) => {
@@ -47,6 +47,6 @@ SocketServer.on("hi", (socket) => {
 })
 
 //wire up the server to listen to our port process.env.PORT || 8000
-http.listen(port, () => {
+httpServer.listen(port, () => {
     console.log("Listening port: " + port)
 })
