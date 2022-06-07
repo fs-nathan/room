@@ -15,14 +15,14 @@ app.use(process.env.NODE_ENV == 'production' ? cors() : cors({
 }))
 
 /* API config */
-const API_V1_PREFIX = '/api/v1/'
+const API_V1_PREFIX = '/api/v1'
 app.use(json())
 app.use(urlencoded({ extended: false }))
 app.use(`${API_V1_PREFIX}/room-message`, RoomMessageRouter)
 app.use(`${API_V1_PREFIX}/room-user`, RoomUserRouter)
 /* End API config */
 
-const httpServer = createServer()
+const httpServer = createServer(app)
 
 const port = process.env.PORT || 8000
 
@@ -34,16 +34,9 @@ const SocketServer = new Server(httpServer, {
 SocketServer.on("connection", (socket) => {
     console.log("user connected: ", socket.id)
 
-    socket.on("hi", () => {
-        console.log('say hi: ', socket.id)
-    })
-
     socket.on("disconnect", (reason) => {
         console.log("socket disconnected : ", socket.id)
     })
-})
-SocketServer.on("hi", (socket) => {
-    console.log(socket.id)
 })
 
 //wire up the server to listen to our port process.env.PORT || 8000
