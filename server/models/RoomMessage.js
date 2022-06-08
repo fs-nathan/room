@@ -29,10 +29,10 @@ Schema.statics.getMessagesByRoomId = async function (
 }
 
 Schema.statics.newMessage = async function (
-    roomId, username, message
+    roomId, sender, message
 ) {
     try {
-        const newMsg = await this.create({ roomId, username, message })
+        const newMsg = await this.create({ roomId, sender: sender || '', message })
         return {
             data: newMsg
         }

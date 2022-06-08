@@ -4,6 +4,6 @@ import RoomMessageController from '../../../controllers/room-message.controller.
 const router = express.Router()
 
 router
-    .get('/:id', RoomMessageController.get) // also connect user here
-    .post('/:id', RoomMessageController.newMessage)
+    .get('/:roomId', RoomMessageController.get) // also connect user here
+    .post('/:roomId', RoomMessageController.newMessage)
 export default router
