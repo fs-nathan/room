@@ -15,6 +15,9 @@ export default {
         try {
             const { roomId } = req.params
             const username = req.body.username
+            console.log('Trying to add new user: ', username, roomId)
+            const found = await RoomUserModel.findUser(roomId, username)
+            if (found && found.exist) return res.status(200).json({ success: true, data: found })
             const created = await RoomUserModel.newUser(roomId, username)
             return res.status(200).json({ success: true, ...created })
         } catch (error) {
@@ -23,7 +26,7 @@ export default {
     },
     deleteUser: async (req, res) => {
         try {
-            const user = await RoomUserModel.deleteUser(req.params.id, req.body.username);
+            const user = await RoomUserModel.deleteUser(req.params.roomId, req.body.username);
             return res.status(200).json({
                 success: true,
                 message: `Deleted user from room`,

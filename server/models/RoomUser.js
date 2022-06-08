@@ -18,10 +18,12 @@ Schema.statics.findUser = async function (
         const found = await this.findOne({
             username, roomId
         })
-        return {
-            exist: !!found,
-            username,
-            roomId
+        if (found) return {
+            exist: true,
+            ...found._doc
+        }
+        else return {
+            exist: false
         }
     } catch (error) {
         console.log('error: ', error)
@@ -45,10 +47,10 @@ Schema.statics.newUser = async function (
 
 Schema.statics.deleteUser = async function (roomId, username) {
     try {
-        const result = await this.remove({ roomId, username });
-        return result;
+        const result = await this.remove({ roomId, username })
+        return result
     } catch (error) {
-        throw error;
+        throw error
     }
 }
 
