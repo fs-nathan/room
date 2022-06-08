@@ -28,11 +28,11 @@ export const catchChunkError = (fn, retriesLeft = 3, interval = 500) =>
   })
 
 const HomePage = React.lazy(() =>
-  catchChunkError(() => import('./components/home-page')),
+  catchChunkError(() => import('./components/home-page/home-page')),
 )
 
 const Room = React.lazy(() =>
-  catchChunkError(() => import('./components/room')),
+  catchChunkError(() => import('./components/room/room')),
 )
 
 function Router() {

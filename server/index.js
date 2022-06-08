@@ -12,8 +12,10 @@ import WebSockets from "./utils/WebSockets.js"
 //create a new express application
 const app = express()
 
+console.log('process.env.NODE_ENV: ', process.env.NODE_ENV)
+
 app.use(process.env.NODE_ENV == 'production' ? cors() : cors({
-    origin: 'localhost:3000',
+    origin: 'http://localhost:3000',
     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }))
 

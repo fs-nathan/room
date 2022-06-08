@@ -11,3 +11,36 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  body #root {
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 0;
+    margin: 0;
+    overflow: auto;
+  }
+}
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  body #root {
+    width: 600px;
+    height: 100vh;
+    margin: auto;
+    overflow: auto;
+  }
+}
+
+body {
+  background-color: #808080;
+}
+
+#root {
+  background-color: #ffffff;
+  align-items: center;
+  text-align: center;
+}

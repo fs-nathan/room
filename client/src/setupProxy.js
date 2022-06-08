@@ -8,5 +8,12 @@ module.exports = (app) => {
     logLevel: 'debug',
   })
 
+  const apiProxy = createProxyMiddleware('/api/v1', {
+    target: 'http://localhost:8000',
+    changeOrigin: true,
+    logLevel: 'debug',
+  })
+
   app.use(socketProxy)
+  app.use(apiProxy)
 }
