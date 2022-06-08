@@ -6,6 +6,9 @@ import { Server } from "socket.io"
 import "./config/mongodb.js"
 import RoomMessageRouter from "./routes/api/v1/room-message.route.js"
 import RoomUserRouter from "./routes/api/v1/room-user.route.js"
+
+import WebSockets from "./utils/WebSockets.js"
+
 //create a new express application
 const app = express()
 
@@ -31,13 +34,8 @@ const SocketServer = new Server(httpServer, {
 })
 
 //To listen to messages
-SocketServer.on("connection", (socket) => {
-    console.log("user connected: ", socket.id)
-
-    socket.on("disconnect", (reason) => {
-        console.log("socket disconnected : ", socket.id)
-    })
-})
+const WS = new WebSockets()
+SocketServer.on("connection", WS.connection)
 
 //wire up the server to listen to our port process.env.PORT || 8000
 httpServer.listen(port, () => {

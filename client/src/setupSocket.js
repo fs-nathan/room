@@ -6,7 +6,11 @@ export const initSocket = () => {
       transports: ['websocket', 'polling', 'flashsocket'],
     })
     window.SOCKET = socket
-    socket.emit('hi', {})
+    // socket.emit('subscribe', { roomId: '101', username: 'fs-nathan' })
+
+    // setTimeout(() => {
+    //   socket.emit('unsubscribe', { roomId: '101', username: 'fs-nathan' })
+    // }, 10000)
   }
   connect()
 }
