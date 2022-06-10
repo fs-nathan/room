@@ -54,4 +54,13 @@ Schema.statics.deleteUser = async function (roomId, username) {
     }
 }
 
+Schema.statics.deleteUsers = async function (usernames) {
+    try {
+        const result = await this.remove({ username: { $in: usernames} })
+        return result
+    } catch (error) {
+        throw error
+    }
+}
+
 export default mongoose.model("RoomUser", Schema)

@@ -153,9 +153,10 @@ function Room() {
             NotificationManager.error(
               'Username exists in room. Please try another username',
             )
-            history.push(`${Routes.HOME}?r=${roomId}`)
+            history.push(`${Routes.HOME}?r=${roomId}&u=${username}`)
           } else {
-            // setLoading(false)
+            const socket = window.SOCKET
+            socket.emit('subscribe', { roomId, username })
             fetchMessages()
           }
         } catch (e) {
@@ -164,6 +165,11 @@ function Room() {
       }
 
       join()
+    }
+
+    return () => {
+      const socket = window.SOCKET
+      socket.emit('unsubscribe', { roomId, username })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [roomId, username])

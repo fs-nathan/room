@@ -1,5 +1,5 @@
 import _ from 'lodash'
-
+import RoomUserModel from '../models/RoomUser.js'
 class WebSockets {
 
     constructor() {
@@ -17,7 +17,7 @@ class WebSockets {
         // event fired when the client is disconnected
         client.on("disconnect", () => {
 
-            console.log('Before disconnect-----------------')
+            console.log(`Before ${client.id} disconnect-----------------`)
             console.log('rooms: ', this.rooms)
             console.log('identities: ', this.identities)
             console.log('\n')
@@ -40,18 +40,23 @@ class WebSockets {
 
 
 
-            console.log('After disconnect-----------------')
+            console.log(`After ${client.id} disconnect-----------------`)
             console.log('rooms: ', this.rooms)
             console.log('identities: ', this.identities)
             console.log('\n')
 
-            // call backend to remove all document with username in the array usernames
+            // call backend to remove all room-user documents with username in the array usernames
+            const removeUsers = async () => {
+                await RoomUserModel.deleteUsers(usernames)
+            }
+
+            removeUsers()
         })
 
         // subscribe person to chat & other user as well
         client.on("subscribe", (data) => {
             const { roomId, username } = data
-            console.log('Before subscribe-----------------')
+            console.log(`Before ${username} subscribe-----------------`)
             console.log('rooms: ', this.rooms)
             console.log('identities: ', this.identities)
             console.log('\n')
@@ -68,18 +73,23 @@ class WebSockets {
             usernames.push(username)
             this.identities[client.id] = usernames
 
-            console.log('After subscribe-----------------')
+            console.log(`After ${username} subscribe-----------------`)
             console.log('rooms: ', this.rooms)
             console.log('identities: ', this.identities)
             console.log('\n')
 
             // call backend to update db
+            const addUserToRoom = async () => {
+                await RoomUserModel.newUser(roomId, username)
+            }
+
+            addUserToRoom()
         })
 
         // leave a chat room
         client.on("unsubscribe", (data) => {
             const { roomId, username } = data
-            console.log('Before unsubscribe-----------------')
+            console.log(`Before ${username} unsubscribe-----------------`)
             console.log('rooms: ', this.rooms)
             console.log('identities: ', this.identities)
             console.log('\n')
@@ -95,12 +105,17 @@ class WebSockets {
             const usernames = _.get(this.identities, client.id, [])
             this.identities[client.id] = usernames.filter(name => name != username)
 
-            console.log('After unsubscribe-----------------')
+            console.log(`After ${username} unsubscribe-----------------`)
             console.log('rooms: ', this.rooms)
             console.log('identities: ', this.identities)
             console.log('\n')
 
             // call backend to update db
+            const removeUserFromRoom = async () => {
+                await RoomUserModel.deleteUser(roomId, username)
+            }
+
+            removeUserFromRoom()
         })
     }
 
