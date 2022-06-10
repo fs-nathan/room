@@ -107,7 +107,7 @@ const getClassNameForMessage = (sender, me) => {
 
 function List({ messages, me, roomId }) {
   return (
-    <ListWrapper>
+    <ListWrapper id="messages-list">
       {messages.map((msg) => (
         <Row key={get(msg, '_id')} message={msg} me={me}>
           <div style={{ marginBottom: 10 }}>

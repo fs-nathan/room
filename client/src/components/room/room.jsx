@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { get, isEmpty } from 'lodash'
+import { get, isEmpty, reverse } from 'lodash'
 import React, { useState, useEffect } from 'react'
 import { NotificationManager } from 'react-notifications'
 import { useHistory, useParams } from 'react-router-dom'
@@ -82,11 +82,13 @@ function Room() {
         const fetchResponse = await fetch(endpoint, options)
         const data = await fetchResponse.json()
         const result = get(data, 'data', [])
-        console.log(result)
-        setMessages(result)
-        NotificationManager.success(`Welcome to ${roomId}`)
+        setMessages(reverse(result))
+        setTimeout(() => {
+          scrollToBottom()
+        }, 200)
+        NotificationManager.success(`Welcome to ${roomId}`, undefined, 500)
       } catch (e) {
-        NotificationManager.error('Something went wrong')
+        NotificationManager.error('Something went wrong', undefined, 500)
         console.log(e)
       }
       setLoading(false)
@@ -114,13 +116,17 @@ function Room() {
         const data = await fetchResponse.json()
         const success = get(data, 'success', false)
         if (success) {
-          NotificationManager.success(`You just left ${roomId}`)
+          NotificationManager.success(`You just left ${roomId}`, undefined, 500)
           history.push(`${Routes.HOME}?r=${roomId}&u=${username}`)
         } else {
-          NotificationManager.error('Unable to leave. Please try again')
+          NotificationManager.error(
+            'Unable to leave. Please try again',
+            undefined,
+            500,
+          )
         }
       } catch (e) {
-        NotificationManager.error('Something went wrong')
+        NotificationManager.error('Something went wrong', undefined, 500)
         console.log(e)
       }
       setLoading(false)
@@ -129,9 +135,46 @@ function Room() {
     exitRoom()
   }
 
+  const handleSendMessage = (message) => {
+    const send = async () => {
+      const endpoint = `${process.env.REACT_APP_SERVER_API_END_POINT}/room-message/${roomId}`
+      const options = {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ sender: username, message }),
+      }
+
+      try {
+        const fetchResponse = await fetch(endpoint, options)
+        const data = await fetchResponse.json()
+        const result = get(data, 'data', {})
+        const success = get(data, 'success', false)
+        if (success && !isEmpty(result))
+          window.SOCKET.emit('MESSAGE_SEND', result)
+      } catch (e) {
+        NotificationManager.error('Something went wrong', undefined, 500)
+        console.log(e)
+      }
+    }
+
+    send()
+  }
+
+  const scrollToBottom = () => {
+    const elem = document.getElementById('messages-list')
+    if (elem) elem.scrollTop = elem.scrollHeight
+  }
+
   useEffect(() => {
     if (isEmpty(roomId) || isEmpty(username)) {
-      NotificationManager.error('Please enter your roomID and username first')
+      NotificationManager.error(
+        'Please enter your roomID and username first',
+        undefined,
+        500,
+      )
       history.push(`${Routes.HOME}`)
     } else {
       // check if user can join
@@ -153,10 +196,19 @@ function Room() {
           if (exist) {
             NotificationManager.error(
               'Username exists in room. Please try another username',
+              undefined,
+              500,
             )
             history.push(`${Routes.HOME}?r=${roomId}&u=${username}`)
           } else {
             const socket = window.SOCKET
+            socket.on('MESSAGE_RECEIVED', (msg) => {
+              console.log('Received from server: ', msg)
+              setMessages((old) => [...old, msg])
+              setTimeout(() => {
+                scrollToBottom()
+              }, 200)
+            })
             socket.emit('subscribe', { roomId, username })
             fetchMessages()
           }
@@ -189,7 +241,9 @@ function Room() {
       {!loading && !isEmpty(messages) && roomId && username && (
         <List messages={messages} me={username} roomId={roomId} />
       )}
-      {!loading && roomId && username && <MessageButton />}
+      {!loading && roomId && username && (
+        <MessageButton onSubmit={handleSendMessage} />
+      )}
     </div>
   )
 }

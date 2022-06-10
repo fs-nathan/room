@@ -18,7 +18,9 @@ Schema.statics.getMessagesByRoomId = async function (
     try {
         const msgList = await this.find({
             roomId
-        })
+        }).sort('-createdAt').limit(7)
+
+
         return {
             data: msgList || []
         }

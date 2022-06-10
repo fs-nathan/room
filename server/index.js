@@ -37,7 +37,8 @@ const SocketServer = new Server(httpServer, {
 
 //To listen to messages
 const WS = new WebSockets()
-SocketServer.on("connection", WS.connection)
+global.SS = SocketServer
+global.SS.on("connection", WS.connection)
 
 //wire up the server to listen to our port process.env.PORT || 8000
 httpServer.listen(port, () => {

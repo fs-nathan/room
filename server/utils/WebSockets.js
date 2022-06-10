@@ -117,6 +117,23 @@ class WebSockets {
 
             removeUserFromRoom()
         })
+
+        client.on("MESSAGE_SEND", (data) => {
+            console.log('\n')
+            console.log('Received from client: ', data)
+
+            // broadcast to room
+            const {roomId} = data
+            if (global.SS && roomId) {
+
+                global.SS.to(roomId).emit('MESSAGE_RECEIVED', data)
+                console.log(`Broadcasting this to room ${roomId} ...`)
+                console.log('\n')
+            } else {
+                console.log('SocketServer undefined ...')
+            }
+
+        })
     }
 
 }

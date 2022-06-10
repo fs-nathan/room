@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
-import React from 'react'
+import { isEmpty } from 'lodash'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 
 const ButtonWrapper = styled.div`
@@ -74,17 +75,34 @@ const ButtonWrapper = styled.div`
       font-size: 24px;
     }
   }
+
+  .message-submit:disabled {
+    opacity: 0.5;
+  }
 `
 
 export default function MessageButton(props) {
+  const [value, setValue] = useState('')
   return (
     <ButtonWrapper {...props}>
       <textarea
         type="text"
+        value={value}
         className="message-input"
         placeholder="Message here ..."
+        onChange={(e) => {
+          setValue(e.target.value)
+        }}
       ></textarea>
-      <button type="submit" className="message-submit">
+      <button
+        type="submit"
+        className="message-submit"
+        disabled={isEmpty(value)}
+        onClick={() => {
+          if (props.onSubmit) props.onSubmit(value)
+          setValue('')
+        }}
+      >
         &uarr;
       </button>
     </ButtonWrapper>
