@@ -13,7 +13,7 @@ function HomePage() {
   const { searchParams } = new URL(window.location.href)
   const [fields, setFields] = useState({
     roomId: searchParams.get('r') || '',
-    username: '',
+    username: searchParams.get('u') || '',
   })
 
   const history = useHistory()

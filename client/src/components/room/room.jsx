@@ -114,7 +114,7 @@ function Room() {
         const success = get(data, 'success', false)
         if (success) {
           NotificationManager.success(`You just left ${roomId}`)
-          history.push(Routes.HOME)
+          history.push(`${Routes.HOME}?r=${roomId}&u=${username}`)
         } else {
           NotificationManager.error('Unable to leave. Please try again')
         }
