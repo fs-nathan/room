@@ -88,7 +88,7 @@ function Room() {
         }, 200)
         NotificationManager.success(`Welcome to ${roomId}`, undefined, 500)
       } catch (e) {
-        NotificationManager.error('Something went wrong', undefined, 500)
+        NotificationManager.error('Something went wrong', undefined, 1500)
         console.log(e)
       }
       setLoading(false)
@@ -122,11 +122,11 @@ function Room() {
           NotificationManager.error(
             'Unable to leave. Please try again',
             undefined,
-            500,
+            1500,
           )
         }
       } catch (e) {
-        NotificationManager.error('Something went wrong', undefined, 500)
+        NotificationManager.error('Something went wrong', undefined, 1500)
         console.log(e)
       }
       setLoading(false)
@@ -155,7 +155,7 @@ function Room() {
         if (success && !isEmpty(result))
           window.SOCKET.emit('MESSAGE_SEND', result)
       } catch (e) {
-        NotificationManager.error('Something went wrong', undefined, 500)
+        NotificationManager.error('Something went wrong', undefined, 1500)
         console.log(e)
       }
     }
@@ -173,7 +173,7 @@ function Room() {
       NotificationManager.error(
         'Please enter your roomID and username first',
         undefined,
-        500,
+        1500,
       )
       history.push(`${Routes.HOME}`)
     } else {
@@ -197,7 +197,7 @@ function Room() {
             NotificationManager.error(
               'Username exists in room. Please try another username',
               undefined,
-              500,
+              1500,
             )
             history.push(`${Routes.HOME}?r=${roomId}&u=${username}`)
           } else {
