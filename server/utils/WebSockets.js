@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import RoomMessageModel from '../models/RoomMessage.js'
 import RoomUserModel from '../models/RoomUser.js'
 class WebSockets {
 
@@ -14,6 +15,17 @@ class WebSockets {
 
         console.log('\n')
 
+        const sendSystemMessage = async (roomId, message) => {
+            const msg = await RoomMessageModel.newMessage(roomId, '', message)
+            if (global.SS && roomId && msg.data) {
+                global.SS.to(roomId).emit('MESSAGE_RECEIVED', msg.data)
+                console.log(`Broadcasting this to room ${roomId} ...`)
+                console.log('\n')
+            } else {
+                console.log('SocketServer undefined ...')
+            }
+        }
+
         // event fired when the client is disconnected
         client.on("disconnect", () => {
 
@@ -22,12 +34,18 @@ class WebSockets {
             console.log('identities: ', this.identities)
             console.log('\n')
 
+            const room_user = []
+
             const usernames = _.get(this.identities, client.id, [])
 
             // disconnect all users with username in the array usernames
             if (!_.isEmpty(this.rooms)) Object.keys(this.rooms).forEach(roomId => {
                 const activeUsers = _.get(this.rooms, roomId, [])
                 this.rooms[roomId] = activeUsers.filter(name => !usernames.includes(name))
+                activeUsers.filter(name => usernames.includes(name)).map(name => {
+                    room_user.push({ roomId, username: name})
+                    return name // no need
+                })
                 try {
                     client.leave(roomId)
                 } catch (e) {
@@ -50,7 +68,16 @@ class WebSockets {
                 await RoomUserModel.deleteUsers(usernames)
             }
 
-            if (!_.isEmpty(usernames)) removeUsers()
+            if (!_.isEmpty(usernames)) {
+                removeUsers()
+            }
+
+            if (!_.isEmpty(room_user)) {
+                room_user.map(async (item) => {
+                    sendSystemMessage(item.roomId, `${item.username} has left`)
+                    return item
+                })
+            }
         })
 
         // subscribe person to chat & other user as well
@@ -84,6 +111,7 @@ class WebSockets {
             }
 
             addUserToRoom()
+            sendSystemMessage(roomId, `${username} has joined`)
         })
 
         // leave a chat room
@@ -116,6 +144,7 @@ class WebSockets {
             }
 
             removeUserFromRoom()
+            sendSystemMessage(roomId, `${username} has left`)
         })
 
         client.on("MESSAGE_SEND", (data) => {

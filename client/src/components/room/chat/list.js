@@ -71,6 +71,20 @@ const ListWrapper = styled.div`
     border-bottom-right-radius: 0;
     color: #fff;
   }
+  .chat-bubble-system {
+    padding: 10px 14px;
+    background: #f6f6f6;
+    border-radius: 5px;
+    position: relative;
+    animation: fadeIn 1s ease-in;
+    width: auto;
+    margin-bottom: 10px;
+    overflow-wrap: break-word;
+    font-size: 10px;
+    border-radius: 1.375rem;
+    margin: 5px !important;
+    text-align: center;
+  }
   @keyframes fadeIn {
     0% {
       opacity: 0;
@@ -100,7 +114,7 @@ const Row = styled.div`
 const MessageWrapper = styled.div``
 
 const getClassNameForMessage = (sender, me) => {
-  if (isEmpty(sender)) return 'chat-bubble chat-bubble-system'
+  if (isEmpty(sender)) return 'chat-bubble-system'
   if (isEqual(sender, me)) return 'chat-bubble chat-bubble--right'
   return 'chat-bubble chat-bubble--left'
 }
@@ -109,7 +123,12 @@ function List({ messages, me, roomId }) {
   return (
     <ListWrapper id="messages-list">
       {messages.map((msg) => (
-        <Row key={get(msg, '_id')} message={msg} me={me}>
+        <Row
+          key={get(msg, '_id') + Math.floor(1000 + Math.random() * 9000)}
+          message={msg}
+          me={me}
+          id={get(msg, '_id')}
+        >
           <div style={{ marginBottom: 10 }}>
             {!isEmpty(msg.sender) && !isEqual(msg.sender, me) && (
               <div className="message-sender">{msg.sender}</div>

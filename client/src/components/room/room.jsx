@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { get, isEmpty, reverse } from 'lodash'
+import { get, isEmpty, isEqual, reverse } from 'lodash'
 import React, { useState, useEffect } from 'react'
 import { NotificationManager } from 'react-notifications'
 import { useHistory, useParams } from 'react-router-dom'
@@ -118,6 +118,10 @@ function Room() {
         if (success) {
           NotificationManager.success(`You just left ${roomId}`, undefined, 500)
           history.push(`${Routes.HOME}?r=${roomId}&u=${username}`)
+          if (subscribed) {
+            const socket = window.SOCKET
+            socket.emit('unsubscribe', { roomId, username })
+          }
         } else {
           NotificationManager.error(
             'Unable to leave. Please try again',
@@ -204,7 +208,13 @@ function Room() {
             const socket = window.SOCKET
             socket.on('MESSAGE_RECEIVED', (msg) => {
               console.log('Received from server: ', msg)
-              setMessages((old) => [...old, msg])
+              setMessages((old) => {
+                const found = [...old].filter((item) =>
+                  isEqual(get(item, '_id'), get(msg, '_id')),
+                )
+                if (isEmpty(found)) return [...old, msg]
+                return [...old]
+              })
               setTimeout(() => {
                 scrollToBottom()
               }, 200)
@@ -222,12 +232,6 @@ function Room() {
       join()
     }
 
-    return () => {
-      if (subscribed) {
-        const socket = window.SOCKET
-        socket.emit('unsubscribe', { roomId, username })
-      }
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [roomId, username])
   return (
