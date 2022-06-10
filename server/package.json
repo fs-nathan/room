@@ -4,6 +4,9 @@
   "description": "Backend for Room application",
   "main": "index.js",
   "type": "module",
+  "engines": {
+    "node": "12.x"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start-dev": "pm2 start index.js && pm2 logs room-backend",
@@ -25,12 +28,6 @@
     "url": "^0.11.0"
   },
   "devDependencies": {
-    "eslint": "^8.16.0",
-    "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-config-node": "^4.1.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-prettier": "^4.0.0",
     "pm2": "^5.2.0",
     "prettier": "^2.6.2"
   }
