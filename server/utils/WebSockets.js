@@ -50,7 +50,7 @@ class WebSockets {
                 await RoomUserModel.deleteUsers(usernames)
             }
 
-            removeUsers()
+            if (!_.isEmpty(usernames)) removeUsers()
         })
 
         // subscribe person to chat & other user as well
@@ -65,12 +65,12 @@ class WebSockets {
 
             // rooms
             const activeUsers = _.get(this.rooms, roomId, [])
-            activeUsers.push(username)
+            if(!activeUsers.includes(username)) activeUsers.push(username)
             this.rooms[roomId] = activeUsers
 
             // identities
             const usernames = _.get(this.identities, client.id, [])
-            usernames.push(username)
+            if(!usernames.includes(username)) usernames.push(username)
             this.identities[client.id] = usernames
 
             console.log(`After ${username} subscribe-----------------`)

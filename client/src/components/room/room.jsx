@@ -66,6 +66,7 @@ function Room() {
 
   const [messages, setMessages] = useState([])
   const history = useHistory()
+  const [subscribed, setSubscribed] = useState(false)
 
   const fetchMessages = () => {
     const load = async () => {
@@ -86,7 +87,6 @@ function Room() {
         setTimeout(() => {
           scrollToBottom()
         }, 200)
-        NotificationManager.success(`Welcome to ${roomId}`, undefined, 500)
       } catch (e) {
         NotificationManager.error('Something went wrong', undefined, 1500)
         console.log(e)
@@ -210,6 +210,8 @@ function Room() {
               }, 200)
             })
             socket.emit('subscribe', { roomId, username })
+            setSubscribed(true)
+            NotificationManager.success(`Welcome to ${roomId}`, undefined, 500)
             fetchMessages()
           }
         } catch (e) {
@@ -221,8 +223,10 @@ function Room() {
     }
 
     return () => {
-      const socket = window.SOCKET
-      socket.emit('unsubscribe', { roomId, username })
+      if (subscribed) {
+        const socket = window.SOCKET
+        socket.emit('unsubscribe', { roomId, username })
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [roomId, username])
