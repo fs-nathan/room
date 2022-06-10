@@ -70,7 +70,9 @@ function Room() {
 
   const fetchMessages = () => {
     const load = async () => {
-      const endpoint = `${process.env.REACT_APP_SERVER_API_END_POINT}/room-message/${roomId}`
+      const endpoint = `${
+        process.env.REACT_APP_SERVER_API_END_POINT || '/api/v1'
+      }/room-message/${roomId}`
       const options = {
         method: 'GET',
         headers: {
@@ -101,7 +103,9 @@ function Room() {
     // call API to exit room. if success -> call socket.unsubcribe
 
     const exitRoom = async () => {
-      const endpoint = `${process.env.REACT_APP_SERVER_API_END_POINT}/room-user/${roomId}`
+      const endpoint = `${
+        process.env.REACT_APP_SERVER_API_END_POINT || '/api/v1'
+      }/room-user/${roomId}`
       const options = {
         method: 'DELETE',
         headers: {
@@ -141,7 +145,9 @@ function Room() {
 
   const handleSendMessage = (message) => {
     const send = async () => {
-      const endpoint = `${process.env.REACT_APP_SERVER_API_END_POINT}/room-message/${roomId}`
+      const endpoint = `${
+        process.env.REACT_APP_SERVER_API_END_POINT || '/api/v1'
+      }/room-message/${roomId}`
       const options = {
         method: 'POST',
         headers: {
@@ -183,7 +189,9 @@ function Room() {
     } else {
       // check if user can join
       const join = async () => {
-        const endpoint = `${process.env.REACT_APP_SERVER_API_END_POINT}/room-user/${roomId}/find`
+        const endpoint = `${
+          process.env.REACT_APP_SERVER_API_END_POINT || '/api/v1'
+        }/room-user/${roomId}/find`
         const options = {
           method: 'POST',
           headers: {
