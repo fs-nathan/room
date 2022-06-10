@@ -207,7 +207,6 @@ function Room() {
           } else {
             const socket = window.SOCKET
             socket.on('MESSAGE_RECEIVED', (msg) => {
-              console.log('Received from server: ', msg)
               setMessages((old) => {
                 const found = [...old].filter((item) =>
                   isEqual(get(item, '_id'), get(msg, '_id')),

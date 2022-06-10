@@ -36,7 +36,6 @@ const ListWrapper = styled.div`
     margin: 5px;
     border-radius: 5px;
     position: relative;
-    animation: fadeIn 1s ease-in;
     width: auto;
     margin-bottom: 10px;
     overflow-wrap: break-word;
@@ -76,7 +75,6 @@ const ListWrapper = styled.div`
     background: #f6f6f6;
     border-radius: 5px;
     position: relative;
-    animation: fadeIn 1s ease-in;
     width: auto;
     margin-bottom: 10px;
     overflow-wrap: break-word;
@@ -84,14 +82,6 @@ const ListWrapper = styled.div`
     border-radius: 1.375rem;
     margin: 5px !important;
     text-align: center;
-  }
-  @keyframes fadeIn {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
   }
 `
 
