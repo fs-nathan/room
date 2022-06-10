@@ -10,8 +10,11 @@ import SubmitButton from '../ui/submit-button'
 import { Routes } from '../../constants/routes'
 
 function HomePage() {
-  const [fields, setFields] = useState({ roomId: '', username: '' })
-  const [loading, setLoading] = useState(false)
+  const { searchParams } = new URL(window.location.href)
+  const [fields, setFields] = useState({
+    roomId: searchParams.get('r') || '',
+    username: '',
+  })
 
   const history = useHistory()
 
@@ -23,37 +26,9 @@ function HomePage() {
   }
 
   const onSubmit = () => {
-    const join = async () => {
-      setLoading(true)
-
-      const endpoint = `${process.env.REACT_APP_SERVER_API_END_POINT}/room-user/${fields.roomId}/find`
-      const options = {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username: fields.username }),
-      }
-
-      try {
-        const fetchResponse = await fetch(endpoint, options)
-        const data = await fetchResponse.json()
-        const exist = get(data, 'data.exist', false)
-        if (exist) {
-          NotificationManager.error(
-            'Username exists. Please try another username',
-          )
-        } else {
-          history.push(Routes.ROOM.replace(':roomId', fields.roomId))
-        }
-      } catch (e) {
-        console.log(e)
-      }
-      setLoading(false)
-    }
-
-    join()
+    history.push(
+      `${Routes.ROOM.replace(':roomId', fields.roomId)}?u=${fields.username}`,
+    )
   }
 
   return (
@@ -73,8 +48,7 @@ function HomePage() {
         value={fields.roomId}
         key="roomid"
       />
-      {loading && <Loader />}
-      {!loading && (
+      {true && (
         <SubmitButton
           type="button"
           label="Join"
