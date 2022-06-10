@@ -7,6 +7,7 @@ import styled from 'styled-components'
 import { Routes } from '../../constants/routes'
 import Loader from '../loading/loader'
 import List from './chat/list'
+import MessageButton from './chat/send-button'
 
 const NavWrapper = styled.div`
   height: 90px;
@@ -188,6 +189,7 @@ function Room() {
       {!loading && !isEmpty(messages) && roomId && username && (
         <List messages={messages} me={username} roomId={roomId} />
       )}
+      {!loading && roomId && username && <MessageButton />}
     </div>
   )
 }

@@ -5,6 +5,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 const ListWrapper = styled.div`
+  z-index: 2;
   &::-webkit-scrollbar {
     display: none;
   }
@@ -12,7 +13,6 @@ const ListWrapper = styled.div`
   scrollbar-width: none; /* Firefox */
 
   overflow-y: auto;
-  height: calc(100vh - 90px - 70px);
   position: absolute;
   top: 90px;
   margin: 0;
@@ -21,10 +21,12 @@ const ListWrapper = styled.div`
   @media only screen and (max-width: 600px) {
     width: calc(90vw);
     left: calc(5vw);
+    height: calc(100vh - 90px - 40px);
   }
   @media only screen and (min-width: 600px) {
     width: 540px;
     left: calc(50vw - 270px);
+    height: calc(100vh - 90px - 60px);
   }
   background-color: transparent;
 
