@@ -27,10 +27,10 @@ const NavWrapper = styled.div`
   .nav-left,
   .nav-right {
     @media only screen and (max-width: 600px) {
-      width: 5vw;
+      width: 32px;
     }
     @media only screen and (min-width: 600px) {
-      width: 24px;
+      width: 32px;
     }
     color: #5db075;
     display: inline-flex;
@@ -39,16 +39,19 @@ const NavWrapper = styled.div`
     border: none;
     outline: none;
     font-size: 15px;
+    padding: 0;
+    text-align: center;
+    justify-content: center;
   }
 
   .nav-title {
     display: inline;
 
     @media only screen and (max-width: 600px) {
-      width: 80vw;
+      width: calc(90vw - 64px);
     }
     @media only screen and (min-width: 600px) {
-      width: 492px;
+      width: calc(540px - 64px);
     }
   }
 `
