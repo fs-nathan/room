@@ -21,12 +21,12 @@ const ListWrapper = styled.div`
   @media only screen and (max-width: 600px) {
     width: calc(90vw);
     left: calc(5vw);
-    height: calc(100vh - 90px - 40px);
+    height: calc(var(--vh, 1vh) * 100 - 90px - 40px);
   }
   @media only screen and (min-width: 600px) {
     width: 540px;
     left: calc(50vw - 270px);
-    height: calc(100vh - 90px - 60px);
+    height: calc(var(--vh, 1vh) * 100 - 90px - 60px);
   }
   background-color: transparent;
 

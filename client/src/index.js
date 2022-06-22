@@ -9,6 +9,15 @@ import { initSocket } from './setupSocket'
 
 initSocket()
 const root = ReactDOM.createRoot(document.getElementById('root'))
+
+const vh = window.innerHeight * 0.01
+document.documentElement.style.setProperty('--vh', `${vh}px`)
+
+window.addEventListener('resize', () => {
+  const verticalHeight = window.innerHeight * 0.01
+  document.documentElement.style.setProperty('--vh', `${verticalHeight}px`)
+})
+
 root.render(
   <>
     <NotificationContainer />
